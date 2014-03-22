@@ -8,13 +8,28 @@ VERTICAL = 1
 # Use a 10x10 board
 BOARD_SIZE = 10
 
+# Just used for formatting output
+SHIP_NAMES = {
+    1: "Submarine",
+    2: "Destroyer",
+    3: "Cruiser",
+    4: "Battleship",
+    5: "Aircraft Carrier"
+}
+
+# Default Ships available
+# 2 x Submarine, 2 x Destroyer, 1 x Crusier,
+# 1 x Battleship, 1 x Aircraft Carrier
+DEFAULT_SHIPS = [5, 4, 3, 2, 2, 1, 1]
+
+class CannotPlaceShip(Exception):
+        pass
 
 class Board(object):
 
     """ A game board that contains ships """
 
-    class CannotPlaceShip(Exception):
-        pass
+    CannotPlaceShip = CannotPlaceShip
 
     def __init__(self):
         self.ships = []
@@ -106,3 +121,30 @@ class Board(object):
             self.destroyed_ships.append(ship)
 
         return ship
+
+
+class Player(object):
+
+    """ Represents the players in the game. """
+
+    CannotPlaceShip = CannotPlaceShip
+
+    def __init__(self, board=None):
+        """ Initialise the player, injecting a board if needed. """
+        self.__board = board
+        if not self.__board:
+            self.__board = Board()
+
+        self.__unplaced_ships = copy(DEFAULT_SHIPS)
+
+    @property
+    def ships_to_place(self):
+        """ Property to protect unplaced ships. """
+        return self.__unplaced_ships
+
+    def place_ship(self, size, x, y, direction=HORIZONTAL):
+        """ Place a ship, ensuring we're able to. """
+        if not size in self.__unplaced_ships:
+            raise self.CannotPlaceShip("No %s to place" % SHIP_NAMES[size])
+        self.__unplaced_ships.remove(size)
+        self.__board.place_ship(size, x, y, direction)

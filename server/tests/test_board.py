@@ -1,14 +1,12 @@
 from unittest import TestCase
 from ..game import Board, VERTICAL
 
-EMPTY_BOARD_STR = "          \n" * 9 + " " * 10
-EMPTY_BOARD = [[None]*10]*10
-
 
 class TestBoard(TestCase):
     def test_board_empty_state(self):
         """ Test the board's empty state is correct. """
         board = Board()
+        EMPTY_BOARD = [[None]*10]*10
         self.assertEquals(board.current_state(), EMPTY_BOARD)
 
     def test_board_displays_empty_output(self):
@@ -16,6 +14,7 @@ class TestBoard(TestCase):
         board = Board()
         output = str(board)
         # 10 empty rows
+        EMPTY_BOARD_STR = "          \n" * 9 + " " * 10
         self.assertEquals(output, EMPTY_BOARD_STR)
 
     def test_board_can_place_single_ship(self):
@@ -159,8 +158,8 @@ class TestBoard(TestCase):
 
         self.assertEquals(board.current_state()[3][0], "5x")
         self.assertEquals(str(board), "555x5     \n" +
-                              "          \n" * 8 +
-                              "          ")      
+                                      "          \n" * 8 +
+                                      "          ")
 
     def test_destroy_ship(self):
         """ Test that destroying a ship entirely will remove it. """
@@ -189,5 +188,5 @@ class TestBoard(TestCase):
         self.assertEquals(board.current_state()[4][0], "5x")
 
         self.assertEquals(str(board), "xxxxx     \n" +
-                              "          \n" * 8 +
-                              "          ")    
+                                      "          \n" * 8 +
+                                      "          ")
