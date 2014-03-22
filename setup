@@ -1,0 +1,8 @@
+#!/bin/sh
+if [ ! -d "ve" ]; then
+    virtualenv ve;
+fi
+
+source ve/bin/activate;
+
+pip install -r requirements.txt;
