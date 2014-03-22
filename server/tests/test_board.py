@@ -133,10 +133,61 @@ class TestBoard(TestCase):
         board.place_ship(1, 9, 9)
         self.assertEquals(board.ships[0]["size"], 1)
 
+    def test_shoot_miss(self):
+        """ Test that shooting and missing will have no effect. """
+        board = Board()
+        board.place_ship(5, 0, 0)
+
+        self.assertEquals(board.shoot(5, 5), None)
+
+        # Check that this changed nothing
+        self.assertEquals(board.ships[0]["size"], 5)
+        expected_coordinates = [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0]]
+        self.assertEquals(board.ships[0]["coordinates"], expected_coordinates)
+
     def test_shoot_ship(self):
         """ Test that shooting a ship will be recorded. """
-        pass
+        board = Board()
+        board.place_ship(5, 0, 0)
+
+        self.assertEquals(board.shoot(3, 0)["size"], 5)
+        expected_coordinates = [[0, 0], [1, 0], [2, 0], [4, 0]]
+        self.assertEquals(board.ships[0]["coordinates"], expected_coordinates)
+        self.assertEquals(board.ships[0]["destroyed_coordinates"], [[3, 0]])
+        self.assertEquals(board.ship_at_position(3, 0), None)
+        self.assertEquals(board.wreckage_at_position(3, 0)["size"], 5)
+
+        self.assertEquals(board.current_state()[3][0], "5x")
+        self.assertEquals(str(board), "555x5     \n" +
+                              "          \n" * 8 +
+                              "          ")      
 
     def test_destroy_ship(self):
         """ Test that destroying a ship entirely will remove it. """
-        pass
+        board = Board()
+        board.place_ship(5, 0, 0)
+
+        self.assertEquals(board.shoot(0, 0)["size"], 5)
+        self.assertEquals(board.shoot(1, 0)["size"], 5)
+        self.assertEquals(board.shoot(2, 0)["size"], 5)
+        self.assertEquals(board.shoot(3, 0)["size"], 5)
+
+        ship = board.shoot(4, 0)
+        self.assertEquals(ship["size"], 5)
+
+        self.assertEquals(len(board.ships), 0)
+        self.assertEquals(len(board.destroyed_ships), 1)
+
+        expected_destroyed = [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0]]
+        self.assertEquals(ship["coordinates"], [])
+        self.assertEquals(ship["destroyed_coordinates"], expected_destroyed)
+
+        self.assertEquals(board.current_state()[0][0], "5x")
+        self.assertEquals(board.current_state()[1][0], "5x")
+        self.assertEquals(board.current_state()[2][0], "5x")
+        self.assertEquals(board.current_state()[3][0], "5x")
+        self.assertEquals(board.current_state()[4][0], "5x")
+
+        self.assertEquals(str(board), "xxxxx     \n" +
+                              "          \n" * 8 +
+                              "          ")    

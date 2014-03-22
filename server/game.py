@@ -18,11 +18,19 @@ class Board(object):
 
     def __init__(self):
         self.ships = []
+        self.destroyed_ships = []
 
     def ship_at_position(self, x, y):
         """ Return the ship at position x, y. None if none. """
         for ship in self.ships:
             if [x, y] in ship["coordinates"]:
+                return ship
+        return None
+
+    def wreckage_at_position(self, x, y):
+        """ Return the wreckage at position x, y. None if none. """
+        for ship in self.ships + self.destroyed_ships:
+            if [x, y] in ship["destroyed_coordinates"]:
                 return ship
         return None
 
@@ -33,8 +41,11 @@ class Board(object):
             current_column = []
             for y in range(BOARD_SIZE):
                 ship = self.ship_at_position(x, y)
+                wreck = self.wreckage_at_position(x, y)
                 if ship:
                     current_column.append(ship["size"])
+                elif wreck:
+                    current_column.append(str(wreck["size"]) + "x")
                 else:
                     current_column.append(None)
             columns.append(current_column)
@@ -51,6 +62,8 @@ class Board(object):
             for cell in row:
                 if not cell:
                     output += " "
+                elif isinstance(cell, basestring) and cell.endswith("x"):
+                    output += "x"
                 else:
                     output += str(cell)
             output += "\n"
@@ -76,4 +89,20 @@ class Board(object):
             current_size -= 1
             current_coordinate[direction] += 1
 
-        self.ships.append({"size": size, "coordinates": coordinates})
+        self.ships.append({"size": size, "coordinates": coordinates,
+                           "destroyed_coordinates": []})
+
+    def shoot(self, x, y):
+        """ Shoot at a given coordinate. Returns the ship hit, or None. """
+        ship = self.ship_at_position(x, y)
+        if not ship:
+            return None
+
+        ship["coordinates"].remove([x, y])
+        ship["destroyed_coordinates"].append([x, y])
+
+        if len(ship["coordinates"]) == 0:
+            self.ships.remove(ship)
+            self.destroyed_ships.append(ship)
+
+        return ship
