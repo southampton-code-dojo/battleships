@@ -40,9 +40,12 @@ class Board(object):
     def __str__(self):
         """ Represent the current state of the board as a string. """
         state = self.current_state()
+
         output = ""
-        for column in state:
-            for cell in column:
+        
+        # Transpose so it's easier to output
+        for row in zip(*state):
+            for cell in row:
                 if not cell:
                     output += " "
                 else:

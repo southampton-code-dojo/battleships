@@ -48,6 +48,46 @@ class TestBoard(TestCase):
             self.assertEquals(board.ship_at_position(x, 0)['size'], 5)
             self.assertEquals(state[x][0], 5)
 
+        self.assertEquals(str(board), "55555     \n" +
+                                      "          \n" * 8 +
+                                      "          ")
+
+    def test_can_place_multiple_ships(self):
+        """ Test that we can place multiple ships. """
+        board = Board()
+        board.place_ship(1, 0, 0)
+        board.place_ship(5, 2, 2)
+        self.assertEquals(board.ships[0]["size"], 1)
+        self.assertEquals(board.ships[0]["coordinates"], [[0, 0]])
+        self.assertEquals(board.ships[1]["size"], 5)
+        self.assertEquals(board.ships[1]["coordinates"], [[2, 2], [3, 2],
+                                                          [4, 2], [5, 2],
+                                                          [6, 2]])
+
+        self.assertEquals(board.ship_at_position(0, 0), board.ships[0])
+
+        for x in range(2, 7):
+            self.assertEquals(board.ship_at_position(x, 2), board.ships[1])
+
+        state = board.current_state()
+        self.assertEquals(state[0][0], 1)
+
+        self.assertEquals(state[2][2], 5)
+        self.assertEquals(state[3][2], 5)
+        self.assertEquals(state[4][2], 5)
+        self.assertEquals(state[5][2], 5)
+        self.assertEquals(state[6][2], 5)
+
+        self.assertEquals(str(board), "1         \n" +
+                                      "          \n" +
+                                      "  55555   \n" +
+                                      "          \n" * 6 +
+                                      "          ")
+
+    def test_can_place_vertical_ship(self):
+        """ Test that a board can support vertical ships. """
+        pass
+
     def test_board_cant_overlap_ships(self):
         """ Test that we can't overlap ships. """
         pass
