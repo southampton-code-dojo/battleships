@@ -117,7 +117,21 @@ class TestBoard(TestCase):
 
     def test_ships_cant_go_out_of_bounds(self):
         """ Test that ships can't go out of bounds. """
-        pass
+        board = Board()
+
+        # Simple tests
+        with self.assertRaises(board.CannotPlaceShip):
+            board.place_ship(1, -1, 0)
+        with self.assertRaises(board.CannotPlaceShip):
+            board.place_ship(1, 0, -1)
+        with self.assertRaises(board.CannotPlaceShip):
+            board.place_ship(1, 10, 9)
+        with self.assertRaises(board.CannotPlaceShip):
+            board.place_ship(1, 9, 10)
+
+        # Test that we can place at the boundary
+        board.place_ship(1, 9, 9)
+        self.assertEquals(board.ships[0]["size"], 1)
 
     def test_shoot_ship(self):
         """ Test that shooting a ship will be recorded. """

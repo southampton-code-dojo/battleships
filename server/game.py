@@ -66,6 +66,12 @@ class Board(object):
             if self.ship_at_position(*current_coordinate):
                 raise self.CannotPlaceShip("Already a ship at %s" %
                                            current_coordinate)
+            if current_coordinate[0] < 0 or current_coordinate[1] < 0:
+                raise self.CannotPlaceShip("Coordinate can't be < 0")
+            if current_coordinate[0] >= BOARD_SIZE or \
+                    current_coordinate[1] >= BOARD_SIZE:
+                raise self.CannotPlaceShip("Coordinate can't be >= %s" %
+                                           BOARD_SIZE)
             coordinates.append(copy(current_coordinate))
             current_size -= 1
             current_coordinate[direction] += 1
