@@ -104,7 +104,16 @@ class TestBoard(TestCase):
 
     def test_board_cant_overlap_ships(self):
         """ Test that we can't overlap ships. """
-        pass
+        board = Board()
+        board.place_ship(1, 5, 5)
+
+        # Simple version
+        with self.assertRaises(board.CannotPlaceShip):
+            board.place_ship(1, 5, 5)
+
+        # More complicated
+        with self.assertRaises(board.CannotPlaceShip):
+            board.place_ship(5, 3, 5)
 
     def test_ships_cant_go_out_of_bounds(self):
         """ Test that ships can't go out of bounds. """

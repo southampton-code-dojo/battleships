@@ -13,6 +13,9 @@ class Board(object):
 
     """ A game board that contains ships """
 
+    class CannotPlaceShip(Exception):
+        pass
+
     def __init__(self):
         self.ships = []
 
@@ -42,7 +45,7 @@ class Board(object):
         state = self.current_state()
 
         output = ""
-        
+
         # Transpose so it's easier to output
         for row in zip(*state):
             for cell in row:
@@ -60,6 +63,9 @@ class Board(object):
         current_coordinate = [x, y]
         current_size = size
         while current_size > 0:
+            if self.ship_at_position(*current_coordinate):
+                raise self.CannotPlaceShip("Already a ship at %s" %
+                                           current_coordinate)
             coordinates.append(copy(current_coordinate))
             current_size -= 1
             current_coordinate[direction] += 1
