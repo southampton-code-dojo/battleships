@@ -1,5 +1,5 @@
 from unittest import TestCase
-from ..game import Board
+from ..game import Board, VERTICAL
 
 EMPTY_BOARD_STR = "          \n" * 9 + " " * 10
 EMPTY_BOARD = [[None]*10]*10
@@ -86,7 +86,21 @@ class TestBoard(TestCase):
 
     def test_can_place_vertical_ship(self):
         """ Test that a board can support vertical ships. """
-        pass
+        board = Board()
+        board.place_ship(5, 0, 0, VERTICAL)
+        self.assertEquals(board.ships[0]["size"], 5)
+
+        expected_coordinates = [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4]]
+        self.assertEquals(board.ships[0]["coordinates"], expected_coordinates)
+        state = board.current_state()
+
+        for y in range(5):
+            self.assertEquals(board.ship_at_position(0, y)['size'], 5)
+            self.assertEquals(state[0][y], 5)
+
+        self.assertEquals(str(board), "5         \n" * 5 +
+                                      "          \n" * 4 +
+                                      "          ")
 
     def test_board_cant_overlap_ships(self):
         """ Test that we can't overlap ships. """
