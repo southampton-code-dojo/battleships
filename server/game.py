@@ -26,9 +26,9 @@ class Board(object):
     def current_state(self):
         """ Return the current state of the board. """
         columns = []
-        for y in range(BOARD_SIZE):
+        for x in range(BOARD_SIZE):
             current_column = []
-            for x in range(BOARD_SIZE):
+            for y in range(BOARD_SIZE):
                 ship = self.ship_at_position(x, y)
                 if ship:
                     current_column.append(ship["size"])
@@ -45,6 +45,8 @@ class Board(object):
             for cell in column:
                 if not cell:
                     output += " "
+                else:
+                    output += str(cell)
             output += "\n"
 
         return output[:-1]
