@@ -1,13 +1,13 @@
 from unittest import TestCase
 from ..game import GameRunner, Player
-from ..demo import DemoAI
+from ..demo import BattleshipsAI
 
 
-class TestDemoAI(TestCase):
+class TestBattleshipsAI(TestCase):
     def test_demo_ai_game_finishes(self):
         """ Test the the Demo AI finishes games. """
-        player1 = Player(ai=DemoAI())
-        player2 = Player(opponent=player1, ai=DemoAI())
+        player1 = Player(ai=BattleshipsAI())
+        player2 = Player(opponent=player1, ai=BattleshipsAI())
         player1.opponent = player2
 
         game = GameRunner(player1, player2)
@@ -15,8 +15,8 @@ class TestDemoAI(TestCase):
 
     def test_demo_ai_doesnt_finish_immediately(self):
         """ Test that the Demo AI takes a few turns to finish. """
-        player1 = Player(ai=DemoAI())
-        player2 = Player(opponent=player1, ai=DemoAI())
+        player1 = Player(ai=BattleshipsAI())
+        player2 = Player(opponent=player1, ai=BattleshipsAI())
         player1.opponent = player2
 
         game = GameRunner(player1, player2)

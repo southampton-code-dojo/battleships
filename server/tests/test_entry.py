@@ -5,7 +5,7 @@ from ..competition import Entry
 class TestEntry(TestCase):
     def test_entry_records_wins(self):
         """ Test the entry records wins. """
-        entry = Entry(ai=None)
+        entry = Entry(1, ai=None)
         self.assertEquals(entry.wins, 0)
 
         entry.win(1)
@@ -15,7 +15,7 @@ class TestEntry(TestCase):
 
     def test_entry_records_losses(self):
         """ Test the entry records wins. """
-        entry = Entry(ai=None)
+        entry = Entry(1, ai=None)
         self.assertEquals(entry.losses, 0)
 
         entry.lose(1)
@@ -25,7 +25,7 @@ class TestEntry(TestCase):
 
     def test_clear_results(self):
         """ Test an entry can clear results for a given opponent. """
-        entry = Entry(ai=None)
+        entry = Entry(1, ai=None)
 
         entry.win(1)
         entry.lose(1)

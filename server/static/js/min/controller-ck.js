@@ -1,0 +1,1 @@
+var battleships=angular.module("battleships",["ngResource"]);battleships.factory("Entry",["$resource",function(e){return e("entries",{})}]),battleships.controller("ScoreListCtrl",["$scope","Entry",function(e,t){e.entries=t.query(),setInterval(function(){e.entries=t.query()},1e3)}]);

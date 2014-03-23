@@ -5,7 +5,8 @@ from game import GameRunner, Player
 class Entry(object):
     """ Represents an entry in the competition. """
 
-    def __init__(self, ai, name=None):
+    def __init__(self, ai_id, ai, name=None):
+        self.id = ai_id
         self.ai = ai
         self.name = name
         self._results = {}
@@ -50,7 +51,7 @@ class Competition(object):
         if not name:
             name = ai_id
 
-        self.__entries[ai_id] = Entry(ai, name=name)
+        self.__entries[ai_id] = Entry(ai_id, ai, name=name)
         self._run_games(ai_id)
 
     def _play_game(self, ai_1_id, ai_2_id):

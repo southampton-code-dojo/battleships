@@ -1,0 +1,13 @@
+@import "_foundation_settings";
+@import "foundation";
+
+
+.progress {
+    position: relative;
+}
+
+.progress-text {
+    position: absolute;
+    top: 2px;
+    left: 10px;
+}

@@ -1,0 +1,16 @@
+# Syntax is ./submit (?live) filename.py
+
+. config
+
+SERVER='localhost'
+FILENAME=$1
+REPLACE=0
+
+if [ "$1" = "live" ]
+    then
+        SERVER=$SERVER_HOST
+        FILENAME=$2
+        REPlACE=1
+fi
+
+curl -i -F replace=$REPLACE -F filedata=@$FILENAME http://$SERVER:8080/enter

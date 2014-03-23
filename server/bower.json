@@ -1,0 +1,10 @@
+{
+  "name": "battleships",
+  "version": "0.0.1",
+  "private": "true",
+  "dependencies": {
+    "foundation": "zurb/bower-foundation",
+    "angular": "1.2.15",
+    "angular-resource": "1.2.15"
+  }
+}
