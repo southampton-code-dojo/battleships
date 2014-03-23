@@ -200,12 +200,16 @@ class GameRunner(object):
     """ Runs a game with two players. """
 
     def __init__(self, player1, player2):
-        self.player1 = player1
-        self.player2 = player2
+        self.players = [player1, player2]
+        self.__current_turn = 0
 
     def place_ships(self):
-        self.player1._place_ships()
-        self.player2._place_ships()
+        self.players[0]._place_ships()
+        self.players[1]._place_ships()
+
+    def next_turn(self):
+        self.players[self.__current_turn]._take_shot()
+        self.__current_turn = int(not self.__current_turn)
 
     def play(self):
         self.place_ships()
