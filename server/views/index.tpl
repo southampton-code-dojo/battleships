@@ -25,7 +25,7 @@
                         <td>{{entry.name}}</td>
                         <td>
                             <div class="progress">
-                                <span class="meter" style="width: {{(entry.wins/(entry.losses+entry.wins)) * 100}}%;"></span>
+                                <span class="meter" style="width: {{(entry.wins/(entry.losses+entry.wins)) * 100}}%; background: {{entry|bgcolour}};"></span>
                                 <span class="progress-text">{{entry.wins}} Wins, {{entry.losses}} Losses</span>
                             </div>
                         </td>

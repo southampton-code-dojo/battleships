@@ -21,3 +21,27 @@ battleships.controller('ScoreListCtrl', ['$scope', 'Entry', function($scope, Ent
         });
     }, 100);
 }]);
+
+// Generate a colour from a string
+// modified from http://stackoverflow.com/questions/3426404/
+// create-a-hexadecimal-colour-based-on-a-string-with-javascript
+// and http://24ways.org/2010/calculating-color-contrast/
+String.prototype.getHashCode = function() {
+    var hash = 0;
+    if (this.length == 0) return hash;
+    for (var i = 0; i < this.length; i++) {
+        hash = this.charCodeAt(i) + ((hash << 5) - hash);
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash;
+};
+Number.prototype.intToHSL = function() {
+    var shortened = this % 360;
+    return "hsl(" + shortened + ",100%,70%)";
+};
+
+battleships.filter('bgcolour', function() {
+    return function(entry) {
+        return entry.name.getHashCode().intToHSL();
+    }
+});
