@@ -10,7 +10,7 @@ if [ "$1" = "live" ]
     then
         SERVER=$SERVER_HOST
         FILENAME=$2
-        REPlACE=1
+        REPLACE=1
 fi
 
 curl -i -F replace=$REPLACE -F filedata=@$FILENAME http://$SERVER:8080/enter
