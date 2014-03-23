@@ -1,5 +1,7 @@
 """ Battleships competition with multiple entries. """
 from game import GameRunner, Player
+from Queue import Queue
+from threading import Thread
 
 
 class Entry(object):
@@ -37,9 +39,24 @@ class Entry(object):
 
 
 class Competition(object):
-    def __init__(self, games_to_run=1000):
+    def __init__(self, games_to_run=1000, threaded=True):
         self.__games_to_run = games_to_run
         self.__entries = {}
+        self.threaded = threaded
+
+        if threaded:
+            self.game_queue = Queue()
+
+            def gamerunner():
+                while True:
+                    entries = self.game_queue.get()
+                    self._play_game(entries[0], entries[1])
+                    self.game_queue.task_done()
+
+            t = Thread(target=gamerunner)
+            t.daemon = True
+            t.start()
+            # TODO: Ensure the thread is killed
 
     def add(self, ai_id, ai):
         """ Add an ai into the competition.
@@ -73,8 +90,12 @@ class Competition(object):
                 self.entries[k].clear_results(ai_id)
 
                 for i in range(self.__games_to_run / 2):
-                    self._play_game(ai_id, k)
-                    self._play_game(k, ai_id)
+                    if self.threaded:
+                        self.game_queue.put([ai_id, k])
+                        self.game_queue.put([k, ai_id])
+                    else:
+                        self._play_game(ai_id, k)
+                        self._play_game(k, ai_id)
 
     @property
     def entries(self):

@@ -71,7 +71,7 @@ class BattleshipsServer(object):
     def add_entry(self, code=None, forms=None):
         """ Add an entry to the competition. """
         if code is None:
-            code = files.get("filedata").file.read()
+            code = request.files.get("filedata").file.read()
         if forms is None:
             forms = request.forms
         exec(code, globals())

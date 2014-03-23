@@ -8,12 +8,13 @@ import json
 class TestServer(TestCase):
     def test_server_returns_index_view(self):
         """ Test that the index view is rendered. """
-        server = BattleshipsServer("localhost", 8080)
+        competition = Competition(threaded=False)
+        server = BattleshipsServer("localhost", 8080, competition=competition)
         self.assertTrue("<h1>Battleships</h1>" in server.index())
 
     def test_server_dumps_entries(self):
         """ Test that the current entries are dumped. """
-        competition = Competition()
+        competition = Competition(threaded=False)
         server = BattleshipsServer("localhost", 8080, competition=competition)
         entries = json.loads(server.entries())
         self.assertEquals(entries, [])
@@ -28,7 +29,7 @@ class TestServer(TestCase):
 
     def test_server_adds_entries(self):
         """ Test that the server can add an uploaded entry. """
-        competition = Competition()
+        competition = Competition(threaded=False)
         server = BattleshipsServer("localhost", 8080, competition=competition)
         server.add_entry(code="""
 from game import AI
