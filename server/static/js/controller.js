@@ -10,8 +10,10 @@ battleships.factory('Entry', ['$resource', function($resource) {
 battleships.controller('ScoreListCtrl', ['$scope', 'Entry', function($scope, Entry) {
     $scope.entries = Entry.query();
 
-    // Refresh the entries once per second
+    // Refresh the entries 10 times per second
     setInterval(function() {
-        $scope.entries = Entry.query();
-    }, 1000);
+        var x = Entry.query(function() {
+            $scope.entries = x;
+        });
+    }, 100);
 }]);
