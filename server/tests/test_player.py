@@ -47,7 +47,7 @@ class TestBoard(TestCase):
 
         ai = TestAI()
         player = Player(ai=ai)
-        player.place_ships()
+        player._place_ships()
         self.assertEquals(passed_game, player)
 
     def test_player_only_requests_ai_place_ships_once(self):
@@ -61,6 +61,6 @@ class TestBoard(TestCase):
                 amount_called += 1
 
         player = Player(ai=TestAI())
-        player.place_ships()
-        player.place_ships()
+        player._place_ships()
+        player._place_ships()
         self.assertEquals(amount_called, 1)

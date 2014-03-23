@@ -158,7 +158,7 @@ class Player(object):
     def end_ship_placement(self):
         self.__unplaced_ships = []
 
-    def place_ships(self):
+    def _place_ships(self):
         """ Tell the AI to place their ships. """
         if len(self.__unplaced_ships) > 0:
             self.ai.place_ships(self)
@@ -182,8 +182,8 @@ class GameRunner(object):
         self.player2 = player2
 
     def place_ships(self):
-        self.player1.place_ships()
-        self.player2.place_ships()
+        self.player1._place_ships()
+        self.player2._place_ships()
 
     def play(self):
         self.place_ships()
