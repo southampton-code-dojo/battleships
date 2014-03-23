@@ -59,3 +59,13 @@ class TestCompetition(TestCase):
         # Hasn't had time to run all the tests yet
         time.sleep(0.1)
         self.assertEqual(competition.entries["ai1"].total_games, 100)
+
+    def test_cant_submit_twice(self):
+        """ Test that submitting too quickly won't double games played. """
+        competition = Competition(games_to_run=100)
+        competition.add("ai1", AI)
+        self.assertEquals(competition.entries["ai1"].total_games, 0)
+        competition.add("ai2", AI)
+        competition.add("ai2", AI)
+        time.sleep(0.1)
+        self.assertEqual(competition.entries["ai1"].total_games, 100)
