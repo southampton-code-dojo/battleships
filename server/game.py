@@ -122,6 +122,11 @@ class Board(object):
 
         return ship
 
+    @property
+    def has_lost(self):
+        """ Return True if this board has lost. """
+        return len(self.ships) == 0
+
 
 class Player(object):
 
@@ -183,6 +188,11 @@ class Player(object):
         self.__my_turn = True
         self.ai.take_shot(self)
 
+    @property
+    def has_lost(self):
+        """ Return True if the player has lost. """
+        return self.__board.has_lost
+
 
 class AI(object):
 
@@ -213,3 +223,11 @@ class GameRunner(object):
 
     def play(self):
         self.place_ships()
+
+    @property
+    def winner(self):
+        if self.players[0].has_lost:
+            return self.players[1]
+        elif self.players[1].has_lost:
+            return self.players[0]
+        return None

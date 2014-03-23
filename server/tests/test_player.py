@@ -115,3 +115,27 @@ class TestBoard(TestCase):
         state = board.current_state()
         self.assertEquals(state[0][0], "2x")
         self.assertEquals(state[1][0], 2)
+
+    def test_has_lost(self):
+        """ Test the player knows when it has lost. """
+
+        class TestAI(AI):
+            def take_shot(self, game):
+                game.take_shot(0, 0)
+
+        player = Player()
+        player2 = Player(opponent=player, ai=TestAI())
+
+        self.assertTrue(player.has_lost)
+
+        player.place_ship(1, 0, 0)
+
+        self.assertFalse(player.has_lost)
+
+        player2._take_shot()
+
+        self.assertTrue(player.has_lost)
+
+    def test_shot_informs_of_hit(self):
+        """ Test that a shot returns hit/miss/destroy. """
+        pass

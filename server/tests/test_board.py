@@ -190,3 +190,18 @@ class TestBoard(TestCase):
         self.assertEquals(str(board), "xxxxx     \n" +
                                       "          \n" * 8 +
                                       "          ")
+
+    def test_has_lost(self):
+        """ Board knows when it has lost. """
+        board = Board()
+
+        # Board is in losing position until a ship is placed
+        self.assertTrue(board.has_lost)
+
+        board.place_ship(1, 0, 0)
+
+        self.assertFalse(board.has_lost)
+
+        board.shoot(0, 0)
+
+        self.assertTrue(board.has_lost)

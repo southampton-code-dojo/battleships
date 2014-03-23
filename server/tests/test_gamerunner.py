@@ -16,6 +16,7 @@ class TestGameRunner(TestCase):
             def place_ships(self, game):
                 global passed_game1
                 passed_game1 = game
+        
         class TestAI2(AI):
             def place_ships(self, game):
                 global passed_game2
@@ -94,7 +95,40 @@ class TestGameRunner(TestCase):
 
     def test_gamerunner_can_recognise_game_over(self):
         """ Test gamerunner can recognise game over. """
-        pass
+        class LoserAI(AI):
+            def place_ships(self, game):
+                game.place_ship(1, 0, 0)
+
+            def take_shot(self, game):
+                pass
+
+        class TestAI(LoserAI):
+            def take_shot(self, game):
+                game.take_shot(0, 0)
+
+        player1 = Player(ai=TestAI())
+        player2 = Player(opponent=player1, ai=TestAI())
+        player1.opponent = player2
+
+        game = GameRunner(player1, player2)
+        game.place_ships()
+
+        self.assertEquals(game.winner, None)
+        game.next_turn()
+        self.assertEquals(game.winner, player1)
+
+        player1 = Player(ai=LoserAI())
+        player2 = Player(opponent=player1, ai=TestAI())
+        player1.opponent = player2
+
+        game = GameRunner(player1, player2)
+        game.place_ships()
+
+        self.assertEquals(game.winner, None)
+        game.next_turn()
+        self.assertEquals(game.winner, None)
+        game.next_turn()
+        self.assertEquals(game.winner, player2)
 
     def test_gamerunner_alternates_shots_until_game_over(self):
         """ Test gamerunner .play() alternates until end of game. """
