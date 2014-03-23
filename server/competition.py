@@ -5,10 +5,9 @@ from game import GameRunner, Player
 class Entry(object):
     """ Represents an entry in the competition. """
 
-    def __init__(self, ai_id, ai, name=None):
+    def __init__(self, ai_id, ai):
         self.id = ai_id
         self.ai = ai
-        self.name = name
         self._results = {}
 
     def win(self, opponent_id):
@@ -42,16 +41,12 @@ class Competition(object):
         self.__games_to_run = games_to_run
         self.__entries = {}
 
-    def add(self, ai_id, ai, name=None):
+    def add(self, ai_id, ai):
         """ Add an ai into the competition.
 
         If the AI already exists it will be replaced.
         """
-
-        if not name:
-            name = ai_id
-
-        self.__entries[ai_id] = Entry(ai_id, ai, name=name)
+        self.__entries[ai_id] = Entry(ai_id, ai)
         self._run_games(ai_id)
 
     def _play_game(self, ai_1_id, ai_2_id):

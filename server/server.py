@@ -17,7 +17,7 @@ class EntryEncoder(json.JSONEncoder):
 
     def default(self, o):
         if isinstance(o, Entry):
-            return {"id": o.id, "name": o.name, "wins": o.wins,
+            return {"id": o.id, "name": o.id, "wins": o.wins,
                     "losses": o.losses}
         return o
 
@@ -37,7 +37,7 @@ class BattleshipsServer(object):
             self.competition = Competition()
 
             # Have a default AI for people to play against
-            self.competition.add("default-demo-ai", BattleshipsAI, name="Demo")
+            self.competition.add("Internal Demo", BattleshipsAI)
 
     def _route(self):
         """ Set up bottle routes for the app. """
@@ -68,13 +68,21 @@ class BattleshipsServer(object):
         """ Dump all entries as json. """
         return json.dumps(self.competition.entries.values(), cls=EntryEncoder)
 
-    def add_entry(self):
+    def add_entry(self, code=None, forms=None):
         """ Add an entry to the competition. """
-        ai_id = request.forms.get("id")
-        name = request.forms.get("name")
-        code = request.files.get("filedata").file.read()
+        if code is None:
+            code = files.get("filedata").file.read()
+        if forms is None:
+            forms = request.forms
         exec(code, globals())
-        self.competition.add(ai_id, BattleshipsAI, name=name)
+        team_name = BattleshipsAI.TEAM_NAME
+        if team_name in self.competition.entries and\
+                not forms.get('replace') == "1":
+            increment = 1
+            while team_name + " " + str(increment) in self.competition.entries:
+                increment += 1
+            team_name = team_name + " " + str(increment)
+        self.competition.add(team_name, BattleshipsAI)
 
 if __name__ == "__main__":
     server = BattleshipsServer(host="localhost", port=8080)
