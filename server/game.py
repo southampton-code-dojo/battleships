@@ -129,7 +129,10 @@ class Player(object):
 
     CannotPlaceShip = CannotPlaceShip
 
-    def __init__(self, ai=None, board=None):
+    class NotYourTurn(Exception):
+        pass
+
+    def __init__(self, opponent=None, ai=None, board=None):
         """ Initialise the player, injecting a board if needed. """
         self.__board = board
         if not self.__board:
@@ -140,7 +143,10 @@ class Player(object):
             # Use default, random AI
             self.ai = AI()
 
+        self.opponent = opponent
+
         self.__unplaced_ships = copy(DEFAULT_SHIPS)
+        self.__my_turn = False
 
     @property
     def ships_to_place(self):
@@ -164,12 +170,28 @@ class Player(object):
             self.ai.place_ships(self)
             self.end_ship_placement()
 
+    def take_shot(self, x, y):
+        """ Take a shot at the opponent's board. """
+        if not self.__my_turn:
+            raise self.NotYourTurn()
+        self.__my_turn = False
+        self.opponent.__board.shoot(x, y)
+
+    def _take_shot(self):
+        """ Tell the AI to take a shot. """
+        self.end_ship_placement()
+        self.__my_turn = True
+        self.ai.take_shot(self)
+
 
 class AI(object):
 
     """ An AI which can play battleships. """
 
-    def place_ships(self):
+    def place_ships(self, game):
+        pass
+
+    def take_shot(self, game):
         pass
 
 

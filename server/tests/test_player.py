@@ -51,7 +51,7 @@ class TestBoard(TestCase):
         self.assertEquals(passed_game, player)
 
     def test_player_only_requests_ai_place_ships_once(self):
-        """ Test the AI won't request the player place ships twice. """
+        """ Test the player won't request the ai place ships twice. """
         global amount_called
         amount_called = 0
 
@@ -64,3 +64,54 @@ class TestBoard(TestCase):
         player._place_ships()
         player._place_ships()
         self.assertEquals(amount_called, 1)
+
+    def test_player_cannot_take_shot_out_of_turn(self):
+        """ Test the player can take a shot when it is their turn. """
+        player = Player(ai=AI())
+
+        with self.assertRaises(Player.NotYourTurn):
+            player.take_shot(0, 0)
+
+    def test_player_can_take_shot_in_turn(self):
+        """ Test the player can't take two shots. """
+        board = Board()
+
+        class TestAI(AI):
+            def place_ships(self, game):
+                game.place_ship(1, 0, 0)
+
+            def take_shot(self, game):
+                game.take_shot(0, 0)
+
+        player2 = Player(board=board, ai=TestAI())
+        player = Player(opponent=player2, ai=TestAI())
+
+        player2._place_ships()
+        player._take_shot()
+
+        state = board.current_state()
+
+        self.assertEquals(state[0][0], "1x")
+
+    def test_player_cannot_take_second_shot(self):
+        """ Test the player can't take two shots. """
+        board = Board()
+
+        class TestAI(AI):
+            def place_ships(self, game):
+                game.place_ship(2, 0, 0)
+
+            def take_shot(self, game):
+                game.take_shot(0, 0)
+                game.take_shot(1, 0)
+
+        player2 = Player(board=board, ai=TestAI())
+        player = Player(opponent=player2, ai=TestAI())
+
+        player2._place_ships()
+        with self.assertRaises(player.NotYourTurn):
+            player._take_shot()
+
+        state = board.current_state()
+        self.assertEquals(state[0][0], "2x")
+        self.assertEquals(state[1][0], 2)
