@@ -21,7 +21,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="entry in entries|orderBy:'-wins'">
+                    <tr ng-repeat="entry in entries|orderBy:winPercentage">
                         <td>{{entry.name}}</td>
                         <td>
                             <div class="progress">
