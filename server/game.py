@@ -129,11 +129,16 @@ class Player(object):
 
     CannotPlaceShip = CannotPlaceShip
 
-    def __init__(self, board=None):
+    def __init__(self, ai=None, board=None):
         """ Initialise the player, injecting a board if needed. """
         self.__board = board
         if not self.__board:
             self.__board = Board()
+
+        self.ai = ai
+        if not ai:
+            # Use default, random AI
+            self.ai = AI()
 
         self.__unplaced_ships = copy(DEFAULT_SHIPS)
 
@@ -146,5 +151,39 @@ class Player(object):
         """ Place a ship, ensuring we're able to. """
         if not size in self.__unplaced_ships:
             raise self.CannotPlaceShip("No %s to place" % SHIP_NAMES[size])
+
         self.__unplaced_ships.remove(size)
         self.__board.place_ship(size, x, y, direction)
+
+    def end_ship_placement(self):
+        self.__unplaced_ships = []
+
+    def place_ships(self):
+        """ Tell the AI to place their ships. """
+        if len(self.__unplaced_ships) > 0:
+            self.ai.place_ships(self)
+            self.end_ship_placement()
+
+
+class AI(object):
+
+    """ An AI which can play battleships. """
+
+    def place_ships(self):
+        pass
+
+
+class GameRunner(object):
+
+    """ Runs a game with two players. """
+
+    def __init__(self, player1, player2):
+        self.player1 = player1
+        self.player2 = player2
+
+    def place_ships(self):
+        self.player1.place_ships()
+        self.player2.place_ships()
+
+    def play(self):
+        self.place_ships()
