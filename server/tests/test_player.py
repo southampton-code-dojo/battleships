@@ -136,6 +136,62 @@ class TestBoard(TestCase):
 
         self.assertTrue(player.has_lost)
 
+    def test_shot_informs_of_miss(self):
+        """ Test that a shot returns False for miss. """
+        global shot_result
+        shot_result = None
+
+        class TestAI(AI):
+            def take_shot(self, game):
+                global shot_result
+                shot_result = game.take_shot(0, 0)
+
+        player = Player()
+        player2 = Player(opponent=player, ai=TestAI())
+
+        player.place_ship(1, 1, 0)
+
+        player2._take_shot()
+
+        self.assertFalse(shot_result[0])
+        self.assertIsNone(shot_result[1])
+
     def test_shot_informs_of_hit(self):
-        """ Test that a shot returns hit/miss/destroy. """
-        pass
+        """ Test that a shot returns True, None for hit. """
+        global shot_result
+        shot_result = None
+
+        class TestAI(AI):
+            def take_shot(self, game):
+                global shot_result
+                shot_result = game.take_shot(0, 0)
+
+        player = Player()
+        player2 = Player(opponent=player, ai=TestAI())
+
+        player.place_ship(2, 0, 0)
+
+        player2._take_shot()
+
+        self.assertTrue(shot_result[0])
+        self.assertIsNone(shot_result[1])
+
+    def test_shot_informs_of_destroyed(self):
+        """ Test that a shot returns True, ship for destroyed. """
+        global shot_result
+        shot_result = None
+
+        class TestAI(AI):
+            def take_shot(self, game):
+                global shot_result
+                shot_result = game.take_shot(0, 0)
+
+        player = Player()
+        player2 = Player(opponent=player, ai=TestAI())
+
+        player.place_ship(1, 0, 0)
+
+        player2._take_shot()
+
+        self.assertTrue(shot_result[0])
+        self.assertEqual(shot_result[1], 1)

@@ -134,6 +134,9 @@ class Player(object):
 
     CannotPlaceShip = CannotPlaceShip
 
+    HORIZONTAL = HORIZONTAL
+    VERTICAL = VERTICAL
+
     class NotYourTurn(Exception):
         pass
 
@@ -180,7 +183,12 @@ class Player(object):
         if not self.__my_turn:
             raise self.NotYourTurn()
         self.__my_turn = False
-        self.opponent.__board.shoot(x, y)
+        ship = self.opponent.__board.shoot(x, y)
+        if not ship:
+            return False, None
+        if len(ship["coordinates"]) == 0:
+            return True, ship["size"]
+        return True, None
 
     def _take_shot(self):
         """ Tell the AI to take a shot. """
@@ -209,6 +217,9 @@ class GameRunner(object):
 
     """ Runs a game with two players. """
 
+    class IsFinished(Exception):
+        pass
+
     def __init__(self, player1, player2):
         self.players = [player1, player2]
         self.__current_turn = 0
@@ -218,11 +229,16 @@ class GameRunner(object):
         self.players[1]._place_ships()
 
     def next_turn(self):
+        if self.winner:
+            raise self.IsFinished()
         self.players[self.__current_turn]._take_shot()
         self.__current_turn = int(not self.__current_turn)
 
     def play(self):
         self.place_ships()
+        while not self.winner:
+            self.next_turn()
+        return self.winner
 
     @property
     def winner(self):
