@@ -69,3 +69,4 @@ class TestCompetition(TestCase):
         competition.add("ai2", AI)
         time.sleep(0.1)
         self.assertEqual(competition.entries["ai1"].total_games, 100)
+        self.assertEqual(competition.entries["ai2"].total_games, 100)

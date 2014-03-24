@@ -34,7 +34,7 @@ class BattleshipsServer(object):
 
         self.competition = competition
         if not self.competition:
-            self.competition = Competition()
+            self.competition = Competition(games_to_run=100)
 
             # Have a default AI for people to play against
             self.competition.add("Internal Demo", BattleshipsAI)

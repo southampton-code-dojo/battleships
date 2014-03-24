@@ -22,8 +22,11 @@ class Entry(object):
             self._results[opponent_id] = {"wins": 0, "losses": 0}
         self._results[opponent_id]["losses"] += 1
 
-    def clear_results(self, opponent_id):
-        self._results[opponent_id] = {"wins": 0, "losses": 0}
+    def clear_results(self, opponent_id=None):
+        if opponent_id:
+            self._results[opponent_id] = {"wins": 0, "losses": 0}
+        else:
+            self._results = {}
 
     @property
     def wins(self):
@@ -45,13 +48,13 @@ class Competition(object):
         self.threaded = threaded
 
         if threaded:
-            self.game_queue = Queue()
+            self.entry_queue = Queue()
 
             def gamerunner():
                 while True:
-                    entries = self.game_queue.get()
-                    self._play_game(entries[0], entries[1])
-                    self.game_queue.task_done()
+                    entry_id = self.entry_queue.get()
+                    self._run_games(entry_id)
+                    self.entry_queue.task_done()
 
             t = Thread(target=gamerunner)
             t.daemon = True
@@ -64,7 +67,10 @@ class Competition(object):
         If the AI already exists it will be replaced.
         """
         self.__entries[ai_id] = Entry(ai_id, ai)
-        self._run_games(ai_id)
+        if self.threaded:
+            self.entry_queue.put(ai_id)
+        else:
+            self._run_games(ai_id)
 
     def _play_game(self, ai_1_id, ai_2_id):
         ai1 = self.entries[ai_1_id]
@@ -84,18 +90,15 @@ class Competition(object):
 
     def _run_games(self, ai_id):
         """ Run (or re-run) all games for a given ai. """
+        self.entries[ai_id].clear_results()
         for k in self.entries.keys():
             if not k == ai_id:
                 # First clear existing results with this AI
                 self.entries[k].clear_results(ai_id)
 
                 for i in range(self.__games_to_run / 2):
-                    if self.threaded:
-                        self.game_queue.put([ai_id, k])
-                        self.game_queue.put([k, ai_id])
-                    else:
-                        self._play_game(ai_id, k)
-                        self._play_game(k, ai_id)
+                    self._play_game(ai_id, k)
+                    self._play_game(k, ai_id)
 
     @property
     def entries(self):
