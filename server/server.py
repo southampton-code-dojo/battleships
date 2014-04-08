@@ -22,6 +22,22 @@ class EntryEncoder(json.JSONEncoder):
         return o
 
 
+
+num2words = {1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', \
+             6: 'Six', 7: 'Seven', 8: 'Eight', 9: 'Nine', 10: 'Ten', \
+            11: 'Eleven', 12: 'Twelve', 13: 'Thirteen', 14: 'Fourteen', \
+            15: 'Fifteen', 16: 'Sixteen', 17: 'Seventeen', 18: 'Eighteen', \
+            19: 'Nineteen', 20: 'Twenty', 30: 'Thirty', 40: 'Forty', \
+            50: 'Fifty', 60: 'Sixty', 70: 'Seventy', 80: 'Eighty', \
+            90: 'Ninety', 0: 'Zero'}
+
+def n2w(n):
+    """ Convert a number to the word representation. """
+    try:
+        return num2words[n]
+    except KeyError:
+        return num2words[n-n%10] + num2words[n%10].lower()
+
 class BattleshipsServer(object):
 
     """ A server for providing a dashboard to Battleships game. """
@@ -79,9 +95,9 @@ class BattleshipsServer(object):
         if team_name in self.competition.entries and\
                 not forms.get('replace') == "1":
             increment = 1
-            while team_name + " " + str(increment) in self.competition.entries:
+            while team_name + " " + n2w(increment) in self.competition.entries:
                 increment += 1
-            team_name = team_name + " " + str(increment)
+            team_name = team_name + " " + n2w(increment)
         self.competition.add(team_name, BattleshipsAI)
 
 if __name__ == "__main__":

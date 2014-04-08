@@ -46,7 +46,7 @@ from game import AI
 class BattleshipsAI(AI):
     TEAM_NAME = "Test AI"
 """, forms={})
-        self.assertEquals(competition.entries["Test AI 1"].id, "Test AI 1")
+        self.assertEquals(competition.entries["Test AI One"].id, "Test AI One")
 
         # Test replacing names
         server.add_entry(code="""
