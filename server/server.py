@@ -101,5 +101,5 @@ class BattleshipsServer(object):
         self.competition.add(team_name, BattleshipsAI)
 
 if __name__ == "__main__":
-    server = BattleshipsServer(host="localhost", port=8080)
+    server = BattleshipsServer(host="0.0.0.0", port=8080)
     server.start()
