@@ -9,7 +9,7 @@ num2words = {1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five',
              90: 'Ninety', 0: 'Zero'}
 
 
-def n2w(n):
+def number_to_words(n):
     """ Convert a number to the word representation. """
     try:
         return num2words[n]

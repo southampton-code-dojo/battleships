@@ -3,7 +3,7 @@ import bottle
 from bottle import Bottle, static_file, request
 from bottle import mako_template as template
 from demo import BattleshipsAI
-from util import n2w
+from util import number_to_words
 import json
 
 # Set up templates
@@ -80,9 +80,10 @@ class BattleshipsServer(object):
         if team_name in self.competition.entries and\
                 not forms.get('replace') == "1":
             increment = 1
-            while team_name + " " + n2w(increment) in self.competition.entries:
+            while " ".join([team_name, number_to_words(increment)]) in \
+                    self.competition.entries:
                 increment += 1
-            team_name = team_name + " " + n2w(increment)
+            team_name = team_name + " " + number_to_words(increment)
         self.competition.add(team_name, BattleshipsAI)
 
 if __name__ == "__main__":
