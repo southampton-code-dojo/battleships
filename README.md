@@ -1,3 +1,9 @@
+This is the version of battleships which was used at Southampton Code Dojo 1. 
+
+Included are the three entries (team5.py, luckynumber.py, and beetleships.py).
+
+If you are wanting to use the framework for your own dojo or similar, the version on MASTER has improvements and bug fixes.
+
 battleships
 ===========
 
