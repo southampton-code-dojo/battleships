@@ -66,7 +66,7 @@ class BattleshipsServer(object):
 
     def start(self):
         """ Start the bottle server. """
-        self._app.run(host=self._host, port=self._port)
+        self._app.run(host=self._host, port=self._port, quiet=True)
 
     def serve_bower(self, filepath):
         """ Serve bower components. """
