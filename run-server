@@ -4,6 +4,8 @@ if [ ! -d "ve" ]; then
     exit
 fi
 
+. config
+
 source ve/bin/activate;
 
 python -m server.server

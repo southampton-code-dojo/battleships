@@ -4,7 +4,10 @@ from bottle import Bottle, static_file, request
 from bottle import mako_template as template
 from demo import BattleshipsAI
 from util import number_to_words
+import os
 import json
+
+GAMES_TO_RUN = int(os.getenv("GAMES_TO_RUN"))
 
 # Set up templates
 bottle.TEMPLATE_PATH.insert(0, 'server/views')
@@ -35,7 +38,7 @@ class BattleshipsServer(object):
 
         self.competition = competition
         if not self.competition:
-            self.competition = Competition(games_to_run=100)
+            self.competition = Competition(games_to_run=GAMES_TO_RUN)
 
             # Have a default AI for people to play against
             self.competition.add("Internal Demo", BattleshipsAI)
