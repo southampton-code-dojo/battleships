@@ -17,6 +17,10 @@ class BattleshipsAI(AI):
     # on the server
     TEAM_NAME = "Your Team Name"
 
+    def __init__(self):
+        # Initialise data here
+        pass
+
     def place_ships(self, game):
 
         """ While we have ships to place, place ships. """
