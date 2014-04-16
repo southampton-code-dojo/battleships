@@ -22,8 +22,10 @@ SHIP_NAMES = {
 # 1 x Battleship, 1 x Aircraft Carrier
 DEFAULT_SHIPS = [5, 4, 3, 2, 2, 1, 1]
 
+
 class CannotPlaceShip(Exception):
         pass
+
 
 class Board(object):
 
