@@ -18,9 +18,9 @@ SHIP_NAMES = {
 }
 
 # Default Ships available
-# 2 x Submarine, 2 x Destroyer, 1 x Crusier,
+# 1 x Destroyer, 2 x Crusier,
 # 1 x Battleship, 1 x Aircraft Carrier
-DEFAULT_SHIPS = [5, 4, 3, 2, 2, 1, 1]
+DEFAULT_SHIPS = [5, 4, 3, 3, 2]
 
 
 class CannotPlaceShip(Exception):
