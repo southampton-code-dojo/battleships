@@ -8,4 +8,4 @@ fi
 
 source ve/bin/activate;
 
-python -m server.server
+nosetests -s

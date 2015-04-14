@@ -15,3 +15,24 @@ def number_to_words(n):
         return num2words[n]
     except KeyError:
         return num2words[n-n % 10] + num2words[n % 10].lower()
+
+
+def format_grid(grid, should_print=False):
+    """ Print out a grid in a readable format. """
+    output = ""
+
+    height = len(grid[0])
+    width = len(grid)
+
+    for y in range(height):
+        row = []
+        for x in range(width):
+            row.append(str(grid[x][y]))
+        output += '\t'.join(row) + "\n"
+
+    # Remove final newline
+    output = output[:-1]
+
+    if should_print:
+        print "\n" + output + "\n"
+    return output

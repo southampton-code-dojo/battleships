@@ -4,7 +4,6 @@
 
 SERVER='localhost'
 FILENAME=$1
-REPLACE=0
 
 if [ "$1" = "live" ]
     then
@@ -13,4 +12,4 @@ if [ "$1" = "live" ]
         REPLACE=1
 fi
 
-curl -i -F replace=$REPLACE -F filedata=@$FILENAME http://$SERVER:8080/enter
+curl --ipv4 -i -F replace=$REPLACE -F filedata=@$FILENAME http://$SERVER:8080/enter

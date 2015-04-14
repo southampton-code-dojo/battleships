@@ -75,7 +75,7 @@ class Competition(object):
     def _play_game(self, ai_1_id, ai_2_id):
         ai1 = self.entries[ai_1_id]
         ai2 = self.entries[ai_2_id]
-
+        
         player1 = Player(ai=ai1.ai())
         player2 = Player(opponent=player1, ai=ai2.ai())
         player1.opponent = player2
@@ -95,6 +95,10 @@ class Competition(object):
             if not k == ai_id:
                 # First clear existing results with this AI
                 self.entries[k].clear_results(ai_id)
+
+                if self.__games_to_run == 1:
+                    # Special case because the loop won't play any for 1 game to run
+                    self._play_game(ai_id, k)
 
                 for i in range(self.__games_to_run / 2):
                     self._play_game(ai_id, k)

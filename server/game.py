@@ -71,6 +71,7 @@ class Board(object):
     def __str__(self):
         """ Represent the current state of the board as a string. """
         state = self.current_state()
+        # TODO: Change this to use format_grid
 
         output = ""
 

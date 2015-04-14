@@ -1,5 +1,8 @@
 # The address of the "central" server which will run the competition
 export SERVER_HOST=127.0.0.1
 
-# The numer of games each AI should play against each other AI
+# The number of games each AI should play against each other AI
 export GAMES_TO_RUN=50
+
+# Set this to 1 to replace identically named AIs, 0 to keep all AIs
+export REPLACE=0
