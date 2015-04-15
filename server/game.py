@@ -143,7 +143,8 @@ class Player(object):
     class NotYourTurn(Exception):
         pass
 
-    def __init__(self, opponent=None, ai=None, board=None):
+    def __init__(self, opponent=None, ai=None, board=None,
+                 starting_ships=None):
         """ Initialise the player, injecting a board if needed. """
         self.__board = board
         if not self.__board:
@@ -156,7 +157,11 @@ class Player(object):
 
         self.opponent = opponent
 
-        self.__unplaced_ships = copy(DEFAULT_SHIPS)
+        if not starting_ships:
+            starting_ships = DEFAULT_SHIPS
+
+        self.STARTING_SHIPS = starting_ships
+        self.__unplaced_ships = copy(starting_ships)
         self.__my_turn = False
 
     @property
@@ -166,8 +171,8 @@ class Player(object):
 
     def place_ship(self, size, x, y, direction=HORIZONTAL):
         """ Place a ship, ensuring we're able to. """
-        if not size in self.__unplaced_ships:
-            raise self.CannotPlaceShip("No %s to place" % SHIP_NAMES[size])
+        if size not in self.__unplaced_ships:
+            raise self.CannotPlaceShip("No %s to place (%s)" % (SHIP_NAMES[size], self.__unplaced_ships))
 
         self.__unplaced_ships.remove(size)
         self.__board.place_ship(size, x, y, direction)

@@ -21,8 +21,8 @@ class TestGameRunner(TestCase):
                 global passed_game2
                 passed_game2 = game
 
-        player1 = Player(ai=TestAI1())
-        player2 = Player(ai=TestAI2())
+        player1 = Player(ai=TestAI1(), starting_ships=[5, 4, 3, 2, 2, 1, 1])
+        player2 = Player(ai=TestAI2(), starting_ships=[5, 4, 3, 2, 2, 1, 1])
 
         game = GameRunner(player1, player2)
         game.place_ships()
@@ -48,8 +48,8 @@ class TestGameRunner(TestCase):
                 global passed_game2
                 passed_game2 = game
 
-        player1 = Player(ai=TestAI1())
-        player2 = Player(ai=TestAI2())
+        player1 = Player(ai=TestAI1(), starting_ships=[5, 4, 3, 2, 2, 1, 1])
+        player2 = Player(ai=TestAI2(), starting_ships=[5, 4, 3, 2, 2, 1, 1])
 
         game = GameRunner(player1, player2)
         game.play()
@@ -78,8 +78,8 @@ class TestGameRunner(TestCase):
                 global passed_game2
                 passed_game2 = game
 
-        player1 = Player(ai=TestAI1())
-        player2 = Player(ai=TestAI2())
+        player1 = Player(ai=TestAI1(), starting_ships=[5, 4, 3, 2, 2, 1, 1])
+        player2 = Player(ai=TestAI2(), starting_ships=[5, 4, 3, 2, 2, 1, 1])
 
         game = GameRunner(player1, player2)
         game.place_ships()
@@ -107,8 +107,9 @@ class TestGameRunner(TestCase):
             def take_shot(self, game):
                 game.take_shot(0, 0)
 
-        player1 = Player(ai=TestAI())
-        player2 = Player(opponent=player1, ai=TestAI())
+        player1 = Player(ai=TestAI(), starting_ships=[5, 4, 3, 2, 2, 1, 1])
+        player2 = Player(opponent=player1, ai=TestAI(),
+                         starting_ships=[5, 4, 3, 2, 2, 1, 1])
         player1.opponent = player2
 
         game = GameRunner(player1, player2)
@@ -121,8 +122,9 @@ class TestGameRunner(TestCase):
         with self.assertRaises(game.IsFinished):
             game.next_turn()
 
-        player1 = Player(ai=LoserAI())
-        player2 = Player(opponent=player1, ai=TestAI())
+        player1 = Player(ai=LoserAI(), starting_ships=[5, 4, 3, 2, 2, 1, 1])
+        player2 = Player(opponent=player1, ai=TestAI(),
+                         starting_ships=[5, 4, 3, 2, 2, 1, 1])
         player1.opponent = player2
 
         game = GameRunner(player1, player2)
@@ -147,8 +149,9 @@ class TestGameRunner(TestCase):
             def take_shot(self, game):
                 game.take_shot(0, 0)
 
-        player1 = Player(ai=LoserAI())
-        player2 = Player(opponent=player1, ai=TestAI())
+        player1 = Player(ai=LoserAI(), starting_ships=[5, 4, 3, 2, 2, 1, 1])
+        player2 = Player(opponent=player1, ai=TestAI(),
+                         starting_ships=[5, 4, 3, 2, 2, 1, 1])
         player1.opponent = player2
 
         game = GameRunner(player1, player2)
@@ -181,8 +184,9 @@ class TestGameRunner(TestCase):
                 next_move = self.moves.pop()
                 game.take_shot(next_move[0], next_move[1])
 
-        player1 = Player(ai=LoserAI())
-        player2 = Player(opponent=player1, ai=WinnerAI())
+        player1 = Player(ai=LoserAI(), starting_ships=[5, 4, 3, 2, 2, 1, 1])
+        player2 = Player(opponent=player1, ai=WinnerAI(),
+                         starting_ships=[5, 4, 3, 2, 2, 1, 1])
         player1.opponent = player2
 
         game = GameRunner(player1, player2)
@@ -191,8 +195,9 @@ class TestGameRunner(TestCase):
         # Now run the game manually to ensure we get the correct number
         # of turns
 
-        player1 = Player(ai=LoserAI())
-        player2 = Player(opponent=player1, ai=WinnerAI())
+        player1 = Player(ai=LoserAI(), starting_ships=[5, 4, 3, 2, 2, 1, 1])
+        player2 = Player(opponent=player1, ai=WinnerAI(),
+                         starting_ships=[5, 4, 3, 2, 2, 1, 1])
         player1.opponent = player2
 
         game = GameRunner(player1, player2)

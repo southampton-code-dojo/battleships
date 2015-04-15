@@ -5,7 +5,7 @@ from ..game import Board, Player, AI
 class TestBoard(TestCase):
     def test_player_can_place_ships(self):
         """ Test the player can place available ships. """
-        player = Player()
+        player = Player(starting_ships=[5, 4, 3, 2, 2, 1, 1])
 
         y = 0
         while len(player.ships_to_place) > 0:
@@ -14,7 +14,7 @@ class TestBoard(TestCase):
 
     def test_player_cant_place_more_ships_than_allowed(self):
         """ Test the player can't place ships they're not allowed to. """
-        player = Player()
+        player = Player(starting_ships=[5, 4, 3, 2, 2, 1, 1])
 
         y = 0
         while len(player.ships_to_place) > 0:
@@ -26,7 +26,7 @@ class TestBoard(TestCase):
 
     def test_player_cant_place_ships_after_finishing_ship_placing(self):
         """ Test that the player only has one chance to place ships. """
-        player = Player()
+        player = Player(starting_ships=[5, 4, 3, 2, 2, 1, 1])
 
         player.place_ship(1, 0, 0)
         player.end_ship_placement()
@@ -46,7 +46,7 @@ class TestBoard(TestCase):
                 passed_game = game
 
         ai = TestAI()
-        player = Player(ai=ai)
+        player = Player(ai=ai, starting_ships=[5, 4, 3, 2, 2, 1, 1])
         player._place_ships()
         self.assertEquals(passed_game, player)
 
@@ -60,14 +60,14 @@ class TestBoard(TestCase):
                 global amount_called
                 amount_called += 1
 
-        player = Player(ai=TestAI())
+        player = Player(ai=TestAI(), starting_ships=[5, 4, 3, 2, 2, 1, 1])
         player._place_ships()
         player._place_ships()
         self.assertEquals(amount_called, 1)
 
     def test_player_cannot_take_shot_out_of_turn(self):
         """ Test the player can take a shot when it is their turn. """
-        player = Player(ai=AI())
+        player = Player(ai=AI(), starting_ships=[5, 4, 3, 2, 2, 1, 1])
 
         with self.assertRaises(Player.NotYourTurn):
             player.take_shot(0, 0)
@@ -83,8 +83,10 @@ class TestBoard(TestCase):
             def take_shot(self, game):
                 game.take_shot(0, 0)
 
-        player2 = Player(board=board, ai=TestAI())
-        player = Player(opponent=player2, ai=TestAI())
+        player2 = Player(board=board, ai=TestAI(),
+                         starting_ships=[5, 4, 3, 2, 2, 1, 1])
+        player = Player(opponent=player2, ai=TestAI(),
+                        starting_ships=[5, 4, 3, 2, 2, 1, 1])
 
         player2._place_ships()
         player._take_shot()
@@ -105,8 +107,10 @@ class TestBoard(TestCase):
                 game.take_shot(0, 0)
                 game.take_shot(1, 0)
 
-        player2 = Player(board=board, ai=TestAI())
-        player = Player(opponent=player2, ai=TestAI())
+        player2 = Player(board=board, ai=TestAI(),
+                         starting_ships=[5, 4, 3, 2, 2, 1, 1])
+        player = Player(opponent=player2, ai=TestAI(),
+                        starting_ships=[5, 4, 3, 2, 2, 1, 1])
 
         player2._place_ships()
         with self.assertRaises(player.NotYourTurn):
@@ -123,8 +127,9 @@ class TestBoard(TestCase):
             def take_shot(self, game):
                 game.take_shot(0, 0)
 
-        player = Player()
-        player2 = Player(opponent=player, ai=TestAI())
+        player = Player(starting_ships=[5, 4, 3, 2, 2, 1, 1])
+        player2 = Player(opponent=player, ai=TestAI(),
+                         starting_ships=[5, 4, 3, 2, 2, 1, 1])
 
         self.assertTrue(player.has_lost)
 
@@ -146,8 +151,9 @@ class TestBoard(TestCase):
                 global shot_result
                 shot_result = game.take_shot(0, 0)
 
-        player = Player()
-        player2 = Player(opponent=player, ai=TestAI())
+        player = Player(starting_ships=[5, 4, 3, 2, 2, 1, 1])
+        player2 = Player(opponent=player, ai=TestAI(),
+                         starting_ships=[5, 4, 3, 2, 2, 1, 1])
 
         player.place_ship(1, 1, 0)
 
@@ -166,8 +172,9 @@ class TestBoard(TestCase):
                 global shot_result
                 shot_result = game.take_shot(0, 0)
 
-        player = Player()
-        player2 = Player(opponent=player, ai=TestAI())
+        player = Player(starting_ships=[5, 4, 3, 2, 2, 1, 1])
+        player2 = Player(opponent=player, ai=TestAI(),
+                         starting_ships=[5, 4, 3, 2, 2, 1, 1])
 
         player.place_ship(2, 0, 0)
 
@@ -186,8 +193,9 @@ class TestBoard(TestCase):
                 global shot_result
                 shot_result = game.take_shot(0, 0)
 
-        player = Player()
-        player2 = Player(opponent=player, ai=TestAI())
+        player = Player(starting_ships=[5, 4, 3, 2, 2, 1, 1])
+        player2 = Player(opponent=player, ai=TestAI(),
+                         starting_ships=[5, 4, 3, 2, 2, 1, 1])
 
         player.place_ship(1, 0, 0)
 
