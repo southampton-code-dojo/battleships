@@ -56,7 +56,7 @@
                 <p>9. When you're ready, submit your entry to the live server.</p>
                 <code>./submit live myentry.py</code>
                 <p>You can resubmit as many times as you like and your entry will compete with all other entries submitted. Once everyone has finished the scores will be cleared and every entry will play every other entry.</p>
-                <p>We recommend you write unit tests for your AI (example in <code>demo_tests.py</code>) but since you won't - change <code>config</code> and set GAMES_TO_RUN to 1 and OVERRIDE to 1. This will allow you to re-submit your AI to the local server and have it play only a single game. This will make it easier to parse your print statements/etc.</p>
+                <p>We recommend you write unit tests for your AI (example in <code>demo_tests.py</code>, run with <code>./run-tests</code>) but since you won't - change <code>config</code> and set GAMES_TO_RUN to 1 and OVERRIDE to 1. This will allow you to re-submit your AI to the local server and have it play only a single game. This will make it easier to parse your print statements/etc.</p>
             </div>
         </div>
     </div>

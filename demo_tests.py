@@ -1,4 +1,10 @@
 # This is an example unit test suite for creating an AI
+# 
+# These are very simple because the demo AI is very simple
+# You should mock the appropriate components from game.py and
+# test your AI in different situations.
+# 
+# 
 from game import GameRunner, Board, Player
 from demo import BattleshipsAI
 from unittest import TestCase
