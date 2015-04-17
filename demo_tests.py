@@ -17,8 +17,8 @@ class TestPlayer(Player):
         self.shots_taken = 0
 
     def place_ship(self, size, x, y, direction):
-        self.placed_ships.append(size)
         super(TestPlayer, self).place_ship(size, x, y, direction)
+        self.placed_ships.append(size)
 
     def take_shot(self, x, y):
         self.shots_taken += 1

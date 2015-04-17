@@ -203,3 +203,11 @@ class TestBoard(TestCase):
 
         self.assertTrue(shot_result[0])
         self.assertEqual(shot_result[1], 1)
+
+    def test_placing_incorrect_ship_still_needs_placed(self):
+        """ Test that we can re-place a rejected ship. """
+        player = Player(starting_ships=[1, 2, 2])
+
+        with self.assertRaises(Player.CannotPlaceShip):
+            player.place_ship(1, 10, 10)
+        player.place_ship(1, 9, 9)

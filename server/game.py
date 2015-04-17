@@ -174,8 +174,11 @@ class Player(object):
         if size not in self.__unplaced_ships:
             raise self.CannotPlaceShip("No %s to place (%s)" % (SHIP_NAMES[size], self.__unplaced_ships))
 
-        self.__unplaced_ships.remove(size)
-        self.__board.place_ship(size, x, y, direction)
+        try:
+            self.__board.place_ship(size, x, y, direction)
+            self.__unplaced_ships.remove(size)
+        except Exception as e:
+            raise e
 
     def end_ship_placement(self):
         self.__unplaced_ships = []
